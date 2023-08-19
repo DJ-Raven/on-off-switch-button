@@ -48,6 +48,9 @@ public class Test extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(246, 246, 246));
 
+        switchOnOff.setEnabled(false);
+
+        switchOnOff1.setOn(false);
         switchOnOff1.setSwitchColor(new java.awt.Color(114, 21, 255));
 
         switchOnOff2.setSwitchColor(new java.awt.Color(231, 53, 193));

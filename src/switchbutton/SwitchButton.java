@@ -1,6 +1,5 @@
 package switchbutton;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -24,12 +23,30 @@ import org.jdesktop.animation.timing.interpolation.Interpolator;
  */
 public class SwitchButton extends javax.swing.JPanel {
 
+    public Color getSwitchOffColor() {
+        return switchOffColor;
+    }
+
+    public void setSwitchOffColor(Color switchOffColor) {
+        this.switchOffColor = switchOffColor;
+        repaint();
+    }
+
     public Color getSwitchColor() {
         return switchColor;
     }
 
     public void setSwitchColor(Color switchColor) {
         this.switchColor = switchColor;
+        repaint();
+    }
+
+    public Color getDisableColor() {
+        return disableColor;
+    }
+
+    public void setDisableColor(Color disableColor) {
+        this.disableColor = disableColor;
         repaint();
     }
 
@@ -88,6 +105,8 @@ public class SwitchButton extends javax.swing.JPanel {
     }
 
     private Color switchColor = new Color(22, 160, 255);
+    private Color switchOffColor = new Color(190, 190, 190);
+    private Color disableColor = new Color(190, 190, 190);
     private int borderSize = 2;
     private int space = 2;
     private int round = 5;
@@ -124,7 +143,7 @@ public class SwitchButton extends javax.swing.JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
+                if (isEnabled() && SwingUtilities.isLeftMouseButton(e)) {
                     if (mouseHover) {
                         setOn(!on, true);
                         runEvent();
@@ -217,16 +236,8 @@ public class SwitchButton extends javax.swing.JPanel {
         Area area = new Area(new RoundRectangle2D.Double(0, 0, width, height, r, r));
         r = round == 999 ? height - borderSize * 2 : round;
         area.subtract(new Area(new RoundRectangle2D.Double(borderSize, borderSize, width - borderSize * 2, height - borderSize * 2, r, r)));
-        g2.setColor(switchColor);
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        g2.setColor(isEnabled() ? EvaluatorColor.evaluate(switchColor, switchOffColor, animate) : disableColor);
         g2.fill(area);
-        float alpha = 1f - animate * 0.7f;
-        if (alpha > 1) {
-            alpha = 1;
-        } else if (alpha < 0) {
-            alpha = 0;
-        }
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         double size = Math.max(width, height);
         size += size * 0.5f;
         double x = (width - size) / 2;
@@ -241,14 +252,7 @@ public class SwitchButton extends javax.swing.JPanel {
         int r = round == 999 ? height - spaceSize * 2 : round;
         Area area = new Area(new RoundRectangle2D.Double(spaceSize + size * animate, spaceSize, size - spaceSize * 2, height - spaceSize * 2, r, r));
         area.intersect(new Area(new RoundRectangle2D.Double(borderSize, borderSize, width - borderSize * 2, height - borderSize * 2, r, r)));
-        g2.setColor(switchColor);
-        float alpha = 1f - animate * 0.35f;
-        if (alpha > 1) {
-            alpha = 1;
-        } else if (alpha < 0) {
-            alpha = 0;
-        }
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        g2.setColor(isEnabled() ? EvaluatorColor.evaluate(switchColor, switchOffColor, animate) : disableColor);
         g2.fill(area);
     }
 

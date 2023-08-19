@@ -105,9 +105,13 @@
       </Layout>
       <SubComponents>
         <Component class="switchbutton.SwitchButton" name="switchOnOff">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="switchbutton.SwitchButton" name="switchOnOff1">
           <Properties>
+            <Property name="on" type="boolean" value="false"/>
             <Property name="switchColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="15" red="72" type="rgb"/>
             </Property>
